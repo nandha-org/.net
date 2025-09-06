@@ -14,15 +14,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{95A0FF45-659
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{67519B42-5BCC-48F9-BA45-CF3C6169AC54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThunderPay.Domain", "src\ThunderPay.Domain\ThunderPay.Domain.csproj", "{C33EA998-C211-4A32-90E5-1A1CE8F2ED29}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThunderPay.Database", "src\ThunderPay.Database\ThunderPay.Database.csproj", "{5396FB83-BD55-4D9D-8281-F7A419836E75}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThunderPay.Application", "src\ThunderPay.Application\ThunderPay.Application.csproj", "{2147B0FF-03C7-455B-9DA9-732AA65153E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThunderPay.Server", "src\ThunderPay.Server\ThunderPay.Server.csproj", "{F8D68125-1BED-4579-BAB7-9A64BB2D7457}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThunderPay.Api", "src\ThunderPay.Api\ThunderPay.Api.csproj", "{B6B4436D-2644-4F00-8B9B-09931B8E418D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderPay.Web", "src\ThunderPay.Web\ThunderPay.Web.csproj", "{9F7A2957-3115-4935-A1CD-6B3C71D6EF0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderPay.Api", "src\ThunderPay.Api\ThunderPay.Api.csproj", "{1FF2DF02-CD9B-418B-BDC2-4BB038DA0738}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThunderPay.Shared", "src\ThunderPay.Shared\ThunderPay.Shared.csproj", "{CCC2BC54-411C-5A13-2214-EE30C76A2CAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +32,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C33EA998-C211-4A32-90E5-1A1CE8F2ED29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C33EA998-C211-4A32-90E5-1A1CE8F2ED29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C33EA998-C211-4A32-90E5-1A1CE8F2ED29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C33EA998-C211-4A32-90E5-1A1CE8F2ED29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5396FB83-BD55-4D9D-8281-F7A419836E75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5396FB83-BD55-4D9D-8281-F7A419836E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5396FB83-BD55-4D9D-8281-F7A419836E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,20 +44,29 @@ Global
 		{F8D68125-1BED-4579-BAB7-9A64BB2D7457}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8D68125-1BED-4579-BAB7-9A64BB2D7457}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8D68125-1BED-4579-BAB7-9A64BB2D7457}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6B4436D-2644-4F00-8B9B-09931B8E418D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6B4436D-2644-4F00-8B9B-09931B8E418D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6B4436D-2644-4F00-8B9B-09931B8E418D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6B4436D-2644-4F00-8B9B-09931B8E418D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F7A2957-3115-4935-A1CD-6B3C71D6EF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7A2957-3115-4935-A1CD-6B3C71D6EF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7A2957-3115-4935-A1CD-6B3C71D6EF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7A2957-3115-4935-A1CD-6B3C71D6EF0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FF2DF02-CD9B-418B-BDC2-4BB038DA0738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FF2DF02-CD9B-418B-BDC2-4BB038DA0738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FF2DF02-CD9B-418B-BDC2-4BB038DA0738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FF2DF02-CD9B-418B-BDC2-4BB038DA0738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC2BC54-411C-5A13-2214-EE30C76A2CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC2BC54-411C-5A13-2214-EE30C76A2CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC2BC54-411C-5A13-2214-EE30C76A2CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC2BC54-411C-5A13-2214-EE30C76A2CAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C33EA998-C211-4A32-90E5-1A1CE8F2ED29} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
 		{5396FB83-BD55-4D9D-8281-F7A419836E75} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
 		{2147B0FF-03C7-455B-9DA9-732AA65153E7} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
 		{F8D68125-1BED-4579-BAB7-9A64BB2D7457} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
-		{B6B4436D-2644-4F00-8B9B-09931B8E418D} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
+		{9F7A2957-3115-4935-A1CD-6B3C71D6EF0E} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
+		{1FF2DF02-CD9B-418B-BDC2-4BB038DA0738} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
+		{CCC2BC54-411C-5A13-2214-EE30C76A2CAA} = {95A0FF45-6596-45F9-984D-A1E1AD27AB51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6362A830-3804-4ABB-ADD8-6E112023CB6A}

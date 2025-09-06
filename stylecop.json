@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "documentationRules": {
+      "companyName": "YourCompany",
+      "documentExposedElements": true,
+      "documentInternalElements": false
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace"
+    }
+  }
+}

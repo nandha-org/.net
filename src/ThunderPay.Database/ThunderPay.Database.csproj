@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\StyleCop.props" />
 	<PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -14,25 +13,29 @@
 	  <CodeAnalysisRuleSet />
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <AdditionalFiles Remove="C:\Users\araxz\source\repos\thunder-pay\stylecop.json" />
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.19">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />    
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />    
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ThunderPay.Domain\ThunderPay.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.5.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\ThunderPay.Shared\ThunderPay.Shared.csproj" />
+	</ItemGroup>
 
 </Project>
