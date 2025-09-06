@@ -1,3 +1,6 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using ThunderPay.Api;
 using ThunderPay.Application;
 using ThunderPay.Database;
@@ -13,16 +16,23 @@ public class Program
 
         builder.Services.AddProblemDetails();
 
+        builder.Services.ConfigureOpenTelemetryTracerProvider((sp, tp) =>
+            tp.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ThunderPay.Server")));
+
+        builder.Services.AddOpenTelemetry()
+            .UseAzureMonitor();
+
         DatabaseIoC.RegisterDatabaseServices(builder.Services);
         ApplicationIoC.RegisterServices(builder.Services);
-        EndpointsIoC.AddEndpoints(builder.Services);
+        ApiIoC.RegisterServices(builder.Services);
 
         var app = builder.Build();
+        app.MapGet("/ping", () => "ok");
 
         app.UseExceptionHandler();
 
         DatabaseIoC.Initialize(app.Services);
-        EndpointsIoC.MapEndpoints(app);
+        ApiIoC.ConfigurePipeline(app);
 
         app.Run();
     }

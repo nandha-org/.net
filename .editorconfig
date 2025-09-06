@@ -237,6 +237,8 @@ dotnet_diagnostic.SA1200.severity = none
 dotnet_diagnostic.SA0001.severity = none
 dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.SA1206.severity = none
+csharp_prefer_system_threading_lock = true:suggestion
+dotnet_diagnostic.SA1602.severity = none
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line

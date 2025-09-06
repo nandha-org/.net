@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ThunderPay.Domain.Entities;
+using ThunderPay.Database.Models;
 
 namespace ThunderPay.Database;
 
@@ -12,7 +12,7 @@ public class ThunderPayDbContext(DbContextOptions<ThunderPayDbContext> options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema(DatabaseConsts.ThunderPayDefaultSchema);
 
         MerchantDbm.Configure(modelBuilder.Entity<MerchantDbm>());
     }

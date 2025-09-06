@@ -1,16 +1,50 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ThunderPay.Application.Commands.Organization;
-using ThunderPay.Application.Queriers;
-using ThunderPay.Domain.Queriers;
-using ThunderPay.Domain.UseCases;
+﻿using DotNetEnv;
+using MassTransit;
+using MassTransit.EntityFrameworkCoreIntegration;
+using Microsoft.Extensions.DependencyInjection;
+using ThunderPay.Application.Sagas.EftSubmission;
+using ThunderPay.Database.Sagas;
+using ThunderPay.Database.Sagas.EftSubmission;
 
 namespace ThunderPay.Application;
 public class ApplicationIoC
 {
     public static void RegisterServices(IServiceCollection services)
     {
-        services.AddScoped<IOrganizationUseCases, OrganizationUseCases>();
+        RegisterMassTransit(services);
+    }
 
-        services.AddScoped<IOrganizationQuerier, OrganizationQuerier>();
+    public static void RegisterMassTransit(IServiceCollection services)
+    {
+        services.AddMassTransit<IBus>(x =>
+        {
+            x.UsingAzureServiceBus((context, cfg) =>
+            {
+                var busConnectionString = Env.GetString("AZURE_SERVICE_BUS") ?? throw new Exception("AZURE_SERVICE_BUS");
+                cfg.Host(busConnectionString);
+
+                cfg.ConfigureEndpoints(context, KebabCaseEndpointNameFormatter.Instance);
+
+                // Reduce concurrency to prevent database overwhelm
+                cfg.ReceiveEndpoint(e =>
+                {
+                    e.PrefetchCount = 10;
+                    e.ConcurrentMessageLimit = 5;
+                });
+
+                cfg.UseScheduledRedelivery(r => r.Intervals(TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(5)));
+                cfg.UseMessageRetry(r => r.Exponential(5, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(5)));
+            });
+
+            x.AddSagaStateMachine<EftSubmissionStateMachine, EftSubmissionSagaStateDbm>()
+                .EntityFrameworkRepository(r =>
+                {
+                    r.ExistingDbContext<PaymentSagaDbContext>();
+                    r.UsePostgres();
+                    r.LockStatementProvider = new PostgresLockStatementProvider();
+                    r.ConcurrencyMode = ConcurrencyMode.Optimistic;
+                    r.IsolationLevel = System.Data.IsolationLevel.ReadCommitted;
+                });
+        });
     }
 }
