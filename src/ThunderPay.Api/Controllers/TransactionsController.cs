@@ -9,14 +9,20 @@ namespace ThunderPay.Api.Controllers;
 public class TransactionsController(IBus bus)
     : Controller
 {
-    [HttpGet]
-    public async Task<IActionResult> Get()
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody]TransactionRequest request)
     {
         await bus.Publish(new SubmitTransactionToProcessorMsg
         {
-            TransactionId = Guid.NewGuid(),
+            TransactionId = request.TransactionId,
+            ToFail = request.ToFail,
             Amount = 100.00m,
         });
+
+        //await bus.Publish(new PostTransactionToWalletMsg
+        //{
+        //    TransactionId = request.TransactionId,
+        //});
 
         // Implementation for getting organizations
         return this.Ok();

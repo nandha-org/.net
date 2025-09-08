@@ -20,16 +20,15 @@ public class ApplicationIoC
         {
             x.UsingAzureServiceBus((context, cfg) =>
             {
-                var busConnectionString = Env.GetString("AZURE_SERVICE_BUS") ?? throw new Exception("AZURE_SERVICE_BUS");
-                cfg.Host(busConnectionString);
+                cfg.Host(Env.GetString("AZURE_SERVICE_BUS") ?? throw new Exception("AZURE_SERVICE_BUS"));
 
                 cfg.ConfigureEndpoints(context, KebabCaseEndpointNameFormatter.Instance);
 
-                // Reduce concurrency to prevent database overwhelm
                 cfg.ReceiveEndpoint(e =>
                 {
                     e.PrefetchCount = 10;
                     e.ConcurrentMessageLimit = 5;
+                    e.UseInMemoryOutbox(context);
                 });
 
                 cfg.UseScheduledRedelivery(r => r.Intervals(TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(5)));
@@ -37,6 +36,7 @@ public class ApplicationIoC
             });
 
             x.AddSagaStateMachine<EftSubmissionStateMachine, EftSubmissionSagaStateDbm>()
+                .Endpoint(e => e.Name = "eft-submission-saga")
                 .EntityFrameworkRepository(r =>
                 {
                     r.ExistingDbContext<PaymentSagaDbContext>();

@@ -19,6 +19,11 @@ public class SubmitTransactionToProcessorActivity(ILogger<SubmitTransactionToPro
         logger.LogInformation("Submitting transaction to processor: {TransactionId}, Amount: {Amount}", context.Message.TransactionId, context.Message.Amount);
         Debug.WriteLine($"Submitting transaction to processor: {JsonSerializer.Serialize(context.Message)}");
 
+        if (context.Message.ToFail)
+        {
+            throw new Exception("Simulated exception in SubmitTransactionToProcessorActivity");
+        }
+
         // delay to simulate processing
         await Task.Delay(1000);
 
