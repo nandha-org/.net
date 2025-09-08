@@ -20,6 +20,12 @@ internal class EftSubmissionStateMachine : MassTransitStateMachine<EftSubmission
 
     public State NotificationSent { get; private set; } = default!;
 
+    public State ProcessorFailed { get; private set; } = default!;
+
+    public State WalletFailed { get; private set; } = default!;
+
+    public State NotificationFailed { get; private set; } = default!;
+
     public Event<SubmitTransactionToProcessorMsg> SubmitTransactionToProcessor { get; private set; } = default!;
 
     public Event<PostTransactionToWalletMsg> PostTransactionToWallet { get; private set; } = default!;
@@ -31,6 +37,9 @@ internal class EftSubmissionStateMachine : MassTransitStateMachine<EftSubmission
         this.State(() => this.SubmittedToProcessor);
         this.State(() => this.PostedToWallet);
         this.State(() => this.NotificationSent);
+        this.State(() => this.ProcessorFailed);
+        this.State(() => this.WalletFailed);
+        this.State(() => this.NotificationFailed);
     }
 
     private void InitEvents()
@@ -55,19 +64,45 @@ internal class EftSubmissionStateMachine : MassTransitStateMachine<EftSubmission
         this.Initially(
             this.When(this.SubmitTransactionToProcessor)
                 .Activity(x => x.OfType<SubmitTransactionToProcessorActivity>())
-                .TransitionTo(this.SubmittedToProcessor));
+                .TransitionTo(this.SubmittedToProcessor)
+                .Catch<Exception>(ex => ex.TransitionTo(this.ProcessorFailed)));
 
         this.During(
             this.SubmittedToProcessor,
             this.When(this.PostTransactionToWallet)
                 .Activity(x => x.OfType<PostTransactionToWalletActivity>())
-                .TransitionTo(this.PostedToWallet));
+                .TransitionTo(this.PostedToWallet)
+                .Catch<Exception>(ex => ex.TransitionTo(this.WalletFailed)));
 
         this.During(
             this.PostedToWallet,
             this.When(this.SendNotification)
                 .Activity(x => x.OfType<SendNotificationActivity>())
                 .TransitionTo(this.NotificationSent)
-                .Finalize());
+                .Finalize()
+                .Catch<Exception>(ex => ex.TransitionTo(this.NotificationFailed)));
+
+        // Allow manual retry from failed states
+        this.During(
+            this.ProcessorFailed,
+            this.When(this.SubmitTransactionToProcessor)
+                .Activity(x => x.OfType<SubmitTransactionToProcessorActivity>())
+                .TransitionTo(this.SubmittedToProcessor)
+                .Catch<Exception>(ex => ex.TransitionTo(this.ProcessorFailed)));
+
+        this.During(
+            this.WalletFailed,
+            this.When(this.PostTransactionToWallet)
+                .Activity(x => x.OfType<PostTransactionToWalletActivity>())
+                .TransitionTo(this.PostedToWallet)
+                .Catch<Exception>(ex => ex.TransitionTo(this.WalletFailed)));
+
+        this.During(
+            this.NotificationFailed,
+            this.When(this.SendNotification)
+                .Activity(x => x.OfType<SendNotificationActivity>())
+                .TransitionTo(this.NotificationSent)
+                .Finalize()
+                .Catch<Exception>(ex => ex.TransitionTo(this.NotificationFailed)));
     }
 }
