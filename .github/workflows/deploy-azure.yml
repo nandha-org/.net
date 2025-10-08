@@ -1,6 +1,6 @@
 # github action to buld and deploy the thunderpay server to azure
 
-name: Deploy Server
+name: Deploy .NET Server
 
 on:
   push:
