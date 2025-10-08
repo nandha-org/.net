@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 env:
-  SERVER_APP_NAME: "thunder-pay-server"
+  SERVER_APP_NAME: "nandha-net"
 
 jobs:
   build:
